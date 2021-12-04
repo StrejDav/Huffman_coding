@@ -1,27 +1,58 @@
 #include<iostream>
 #include<string>
-#include<queue>
 #include<chrono>
+#include<sstream>
 #include"HuffmanCoder.cpp"
 
 using namespace std;
 
 int main()
 {
-    HuffmanCoder c;
-    
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    c.Compress("test.txt", "compressed.hf");
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    cout << "Compress: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  << "\n";
-/*
-    begin = std::chrono::steady_clock::now();
-    p.Decompress("compressed.hf", "decompressed.txt");
-    end = std::chrono::steady_clock::now();
-    cout << "Decompress: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  << "\n";
-    */
+    HuffmanCoder *hf = new HuffmanCoder;
+    string inserted;
+    string arguments[3];
+    stringstream ssin;
+    int i;
+    chrono::steady_clock::time_point begin;
+    chrono::steady_clock::time_point end;
 
-   std::string cc = "asdasdafg";
-   std::string pp = std::string(cc.end()-1, cc.end());
-   cout << pp;
+    cout << "Please write your intention in the following manner: compress/decompress input_file output_file\n"
+         << "Example: compress test.txt compressed.hf\n"
+         << "Type exit to end\n";
+    while(true)
+    {
+        getline(cin, inserted);
+        if (inserted == "exit") break;
+        
+        i = 0;
+        ssin = stringstream(inserted);
+        while(ssin.good() && i < 4)
+        {
+            ssin >> arguments[i];
+            i++;
+        }
+        try
+        {
+            if (arguments[0] == "compress")
+            {
+                begin = chrono::steady_clock::now();
+                hf->Compress(arguments[1], arguments[2]);
+                end = chrono::steady_clock::now();
+                cout << "Compression successful. It took " << (chrono::duration_cast<chrono::microseconds>(end - begin).count()) /1000000.0 << "s\n";
+            }
+            else if (arguments[0] == "decompress")
+            {
+                begin = chrono::steady_clock::now();
+                hf->Decompress(arguments[1], arguments[2]);
+                end = chrono::steady_clock::now();
+                cout << "Decompression successful. It took " << (chrono::duration_cast<chrono::microseconds>(end - begin).count()) /1000000.0 << "s\n";
+            }
+            else cout << "Invalid input! Try again.\n";
+        }
+        catch(const exception& e)
+        {
+            cout << e.what() << " Try again.\n";
+        }
+    }
+    delete hf;
 }
