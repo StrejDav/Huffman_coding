@@ -1,48 +1,54 @@
-#include "Node_BT.h"
 #include<vector>
 #include<string>
 #include<queue>
 #include<map>
+#include<bitset>
 
-#define H std::pair<size_t, char>
+typedef std::bitset<8> Byte;
+typedef std::pair<size_t, char> H;
 
 struct Node
 {
     H data;
     Node *left = nullptr;
     Node *right = nullptr;
-
-    // This overload makes sure, that the nodes in priority queue will always be ordered in the same way
-    friend bool operator<(const Node &a, const Node &b)
+    
+    Node (const H& data_ = H(0, 0)) : data(data_) {}
+    
+    friend bool operator<(const Node& a, const Node& b)
     {
         if (a.data.first == b.data.first & a.data.second == b.data.second) return a.right < b.right;
         else if (a.data.first == b.data.first) return a.data.second > b.data.second;
         else return a.data.first > b.data.first;
     }
-    Node(const H &data) { this->data = data; }
-    Node() {};
 };
 
 class HuffmanCoder
 {
 private:
+
+    const char SOH = char(1); // SOH = start of header
+    const char STX = char(2); // STX = start of text
+    
     std::priority_queue<Node> pq;
     Node root;
-    std::map<char, std::vector<bool>> codedChars;
+    std::map<char, std::string> codedChars;
 
     const void CreateNodes(std::istream &txtStream);
-    const void CreateNodes(const std::vector<H> &frequencyTable);
     const void CreateTree();
-    const void CodeChars(const Node &node, std::vector<bool> prefix);
+    const void CodeChars(const Node &node, std::string prefix);
     const void DecodeChars(const std::vector<bool> &outputVec, std::ofstream &outputStream);
-    std::vector<bool> MakeEncodedVec(std::istream &str);
-    const void DeleteTree(const Node &node);
+
+    const void Preprocess(std::istream& streamToEncode);
+    const void TraversePreorder(std::vector<char*>& headerChars, std::vector<bool>& headerLeafNodes, Node& root);
+    const void WriteLeafNodes(std::ofstream& outStream, const std::vector<bool>& leafNodes);
+    const void WriteEncoded(std::ofstream& outStream, std::istream& inStream);
+    const void WriteBytes(std::ofstream& outStream, std::string& buffer);
+    const void WriteBuffer();
 
 public:
-    std::vector<bool> Encode(std::istream &streamToEncode);
-    std::string Decode(const std::map<char, std::vector<bool>> &codedChars, const std::string &encodedStr);
     const void Decode(const std::vector<H> &frequencyTable, const std::vector<bool> &outputVec, std::ofstream &outputStream);
 
-    std::map<char, std::vector<bool>> Get_CodedChars() { return codedChars; }
-    const Node &Get_Root() { return root; }
+    const void Compress(const std::string &inputFilePath, const std::string &outputFilePath);
+    const void Decompress(const std::string &inputFilePath, const std::string &outputFilePath);
 };
