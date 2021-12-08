@@ -8,6 +8,7 @@ using namespace std;
 
 int main()
 {
+    // Definition of variables used
     HuffmanCoder *hf = new HuffmanCoder;
     string inserted;
     string arguments[3];
@@ -21,9 +22,11 @@ int main()
          << "Type exit to end\n";
     while(true)
     {
+        // Write inputed text into inserted
         getline(cin, inserted);
         if (inserted == "exit") break;
         
+        // Converts string to array with spae as a separator
         i = 0;
         ssin = stringstream(inserted);
         while(ssin.good() && i < 4)
@@ -31,6 +34,8 @@ int main()
             ssin >> arguments[i];
             i++;
         }
+
+        // Processes the inputed text
         try
         {
             if (arguments[0] == "compress")
