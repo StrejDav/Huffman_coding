@@ -1,4 +1,5 @@
 #include<fstream>
+#include<iostream>
 #include "HuffmanCoder.h"
 
 /**
@@ -12,12 +13,15 @@ const void HuffmanCoder::Compress(const std::string& inputFilePath, const std::s
     // Clear private variables
     preorderTraversal.clear();
     leafNodes.clear();
+    size = 0;
 
     // Define input and output streams
     std::filebuf fb;
     if(!fb.open(inputFilePath, std::ios::in)) throw std::runtime_error("The file to compress was not foud!");
     std::istream inputStream(&fb);
     std::ofstream outputStream(outputFilePath, std::ofstream::binary);
+
+    std::cout << "Compression in progress...\n";
 
     // Preprocess file
     PreprocessCompress(inputStream);
@@ -51,6 +55,8 @@ const void HuffmanCoder::Decompress(const std::string &inputFilePath, const std:
     std::ofstream outputStream(outputFilePath);
     if (!inputStream.is_open()) throw std::runtime_error("The compressed file was not foud!");
     if (inputStream.get() != SOH) throw std::runtime_error("The file to decompress is invalid!");
+
+    std::cout << "Decompression in progress...\n";
 
     // Preprocess file
     PreprocessDeompress(inputStream);
@@ -132,7 +138,10 @@ const void HuffmanCoder::CreateNodes(std::istream &inpStream)
     std::map<char, size_t> frequencies;
 
     while (inpStream)
+    {
         frequencies[char(inpStream.get())]++;
+        size++;
+    }
         
     for (const auto& i: frequencies)
         pq.emplace(H(i.second, i.first));

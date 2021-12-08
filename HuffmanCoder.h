@@ -15,7 +15,12 @@ struct Node
     
     Node (const H& data_ = H(0, 0)) : data(data_), left(nullptr), right(nullptr) {}
     
-    friend bool operator<(const Node& a, const Node& b) { return a.data.first > b.data.first; }
+    friend bool operator<(const Node& a, const Node& b)
+    {
+        if (a.data.first == b.data.first && a.data.second == b.data.second) return a.left < b.left;
+        else if (a.data.first == b.data.first) return a.data.second > b.data.second;
+        else return a.data.first > b.data.first;
+    }
 };
 
 class HuffmanCoder
@@ -34,24 +39,25 @@ private:
     std::map<char, std::string> codedChars;
     std::vector<char> preorderTraversal;
     std::vector<bool> leafNodes;
+    double size;
 
     // Preprocessing
     const void PreprocessCompress(std::istream& inpStream);
     const void PreprocessDeompress(std::istream& inpStream);
 
     // Compression
-    const void TraversePreorder(std::vector<char>& headerChars, std::vector<bool>& headerLeafNodes, Node& root);
+    const void TraversePreorder(std::vector<char>& preorderTraversal, std::vector<bool>& leafNodes, Node& root);
     const void WriteLeafNodes(std::ofstream& outStream, const std::vector<bool>& leafNodes);
-    const void WriteEncoded(std::ofstream& outStream, std::istream& inStream);
+    const void WriteEncoded(std::ofstream& outStream, std::istream& inpStream);
     const void WriteBytes(std::ofstream& outStream, std::string& buffer);
-    const void CreateNodes(std::istream &txtStream);
+    const void CreateNodes(std::istream& inpStream);
     const void MakeTree();
     const void CodeChars(const Node &node, std::string prefix = "");
 
     // Decompression
     const void ReadHeader(std::istream& inpStream);
     Node* MakeTreeFromPreorder(std::vector<char>& preorderTraversal, std::vector<bool>& leafNodes);
-    const void DecodeChars(std::istream& inputStream, std::ofstream& outputStream);
+    const void DecodeChars(std::istream& inpStream, std::ofstream& outStream);
 
 public:
     const void Compress(const std::string &inputFilePath, const std::string &outputFilePath);

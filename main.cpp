@@ -43,14 +43,14 @@ int main()
                 begin = chrono::steady_clock::now();
                 hf->Compress(arguments[1], arguments[2]);
                 end = chrono::steady_clock::now();
-                cout << "Compression successful. It took " << (chrono::duration_cast<chrono::microseconds>(end - begin).count()) /1000000.0 << "s\n";
+                cout << "Compression successful. It took " << (chrono::duration_cast<chrono::microseconds>(end - begin).count()) /1000000.0 << " s\n";
             }
             else if (arguments[0] == "decompress")
             {
                 begin = chrono::steady_clock::now();
                 hf->Decompress(arguments[1], arguments[2]);
                 end = chrono::steady_clock::now();
-                cout << "Decompression successful. It took " << (chrono::duration_cast<chrono::microseconds>(end - begin).count()) /1000000.0 << "s\n";
+                cout << "Decompression successful. It took " << (chrono::duration_cast<chrono::microseconds>(end - begin).count()) /1000000.0 << " s\n";
             }
             else cout << "Invalid input! Try again.\n";
         }
