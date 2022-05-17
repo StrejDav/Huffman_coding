@@ -39,7 +39,6 @@ private:
     std::map<char, std::string> codedChars;
     std::vector<char> preorderTraversal;
     std::vector<bool> leafNodes;
-    double size;
 
     // Preprocessing
     const void PreprocessCompress(std::istream& inpStream);

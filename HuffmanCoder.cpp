@@ -13,7 +13,6 @@ const void HuffmanCoder::Compress(const std::string& inputFilePath, const std::s
     // Clear private variables
     preorderTraversal.clear();
     leafNodes.clear();
-    size = 0;
 
     // Define input and output streams
     std::filebuf fb;
@@ -138,10 +137,7 @@ const void HuffmanCoder::CreateNodes(std::istream &inpStream)
     std::map<char, size_t> frequencies;
 
     while (inpStream)
-    {
         frequencies[char(inpStream.get())]++;
-        size++;
-    }
         
     for (const auto& i: frequencies)
         pq.emplace(H(i.second, i.first));

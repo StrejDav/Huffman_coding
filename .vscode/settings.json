@@ -51,6 +51,20 @@
         "chrono": "cpp",
         "ratio": "cpp",
         "xmemory0": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "bit": "cpp",
+        "charconv": "cpp",
+        "clocale": "cpp",
+        "ctime": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "iomanip": "cpp",
+        "locale": "cpp",
+        "optional": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp",
+        "numeric": "cpp"
     }
 }
