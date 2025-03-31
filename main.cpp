@@ -2,7 +2,7 @@
 #include<string>
 #include<chrono>
 #include<sstream>
-#include"HuffmanCoder.cpp"
+#include"HuffmanCoder.h"
 
 using namespace std;
 
